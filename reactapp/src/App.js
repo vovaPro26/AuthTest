@@ -1,59 +1,85 @@
-import React, { Component } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 
-export default class App extends Component {
-    static displayName = App.name;
 
-    constructor(props) {
-        super(props);
-        this.state = { forecasts: [], loading: true };
-    }
+const MainDivLogin = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+`
 
-    componentDidMount() {
-        this.populateWeatherData();
-    }
+const Login = styled.div`
+    font-size: 1.5em;
 
-    static renderForecastsTable(forecasts) {
-        return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
-    }
+`
+const Panel = styled.div`
+    width: 25em;
+    height: 12em;
+    border: solid 1px;
+    border-radius: 5px;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+`
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
+const InputsZone = styled.div`
+    width: 10em;
+    display:flex;
+    justify-content: center;
+`
 
-        return (
-            <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
-                {contents}
-            </div>
-        );
-    }
+const ButtonLogin = styled.button`
 
-    async populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
-    }
+appearance: none;
+  background-color: #2ea44f;
+  border: 1px solid rgba(27, 31, 35, .15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 6px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  margin-top: 3px
+`
+
+
+export function App() {
+    return (
+        <MainDivLogin >
+            <Panel>
+                <Login >
+                    Login
+                </Login>
+                <InputsZone>
+                    <div>
+                        <span>
+                            Email
+                        </span>
+                        <input className="inputs" />
+                        <span>
+                            Password
+                        </span>
+                        <input className="inputs" />
+                    </div>
+                </InputsZone>
+                <ButtonLogin>
+                Login
+                </ButtonLogin>
+            </Panel>
+        </MainDivLogin>
+    )
 }
