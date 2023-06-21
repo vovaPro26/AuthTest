@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
 
 const MainDivLogin = styled.div`
     display: flex;
@@ -14,7 +14,6 @@ const Login = styled.div`
 `
 const Panel = styled.div`
     width: 25em;
-    height: 12em;
     border: solid 1px;
     border-radius: 5px;
     display:flex;
@@ -24,62 +23,48 @@ const Panel = styled.div`
 `
 
 const InputsZone = styled.div`
-    width: 10em;
+    width: 13em;
     display:flex;
     justify-content: center;
 `
 
-const ButtonLogin = styled.button`
+const Inputs = styled.div`
+    margin-top: 5px;
+    margin-bottom: 5px;
+`
 
-appearance: none;
-  background-color: #2ea44f;
-  border: 1px solid rgba(27, 31, 35, .15);
-  border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  padding: 6px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
-  margin-top: 3px
+const BudttonLogin = styled.div`
+
+  margin-bottom:3px;
 `
 
 
 export function App() {
     return (
-        <MainDivLogin >
-            <Panel>
-                <Login >
-                    Login
-                </Login>
-                <InputsZone>
-                    <div>
-                        <span>
-                            Email
-                        </span>
-                        <input className="inputs" />
-                        <span>
-                            Password
-                        </span>
-                        <input className="inputs" />
-                    </div>
-                </InputsZone>
-                <ButtonLogin>
-                Login
-                </ButtonLogin>
-            </Panel>
+        <MainDivLogin>
+            <Box component="span" sx={{p: 2, border: '1px dashed grey'}} >
+                <Panel>
+                    <Login >
+                        Login
+                    </Login>
+                    <InputsZone>
+                        <div>
+                            <Inputs>
+                                <TextField id="Email" label="Email" variant="filled" />
+                            </Inputs>
+                            <Inputs>
+                                <TextField id="Password" label="Password" variant="filled" />
+                            </Inputs>
+                        </div>
+                    </InputsZone>
+                    <BudttonLogin>
+                        <Button color="success"
+                            variant="outlined">
+                            Login
+                        </Button>
+                    </BudttonLogin>
+                </Panel>
+            </Box>
         </MainDivLogin>
     )
 }
