@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Http.HttpResults;
 using webapi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,7 @@ var app = builder.Build();
 
 app.AddWeatherForecast();
 
-
+app.AddLogin();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -32,3 +33,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+

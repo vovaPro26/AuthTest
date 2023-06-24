@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 
 const MainDivLogin = styled.div`
@@ -48,12 +49,20 @@ export function App() {
         handleSubmit
     } = useForm();
 
+
+    function onSubmit(e) {
+        axios.get('/WeatherForecastNew',() => {})
+        axios.post('/login', {
+            email: e.email,
+            password: e.Password
+        })
+    };
     console.log(errors.email)
     return (
         <MainDivLogin>
             <Box component="span" sx={{ p: 2, border: '1px dashed grey' }} >
-                <form onSubmit={handleSubmit(console.log)}>
-                    <Panel> 
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Panel>
                         <Login >
                             Login
                         </Login>
@@ -64,7 +73,7 @@ export function App() {
                                         id="Email"
                                         label="Email"
                                         variant="filled"
-                                        helperText={errors.email && errors.email.message }
+                                        helperText={errors.email && errors.email.message}
                                         error={errors.email}
                                         {...register("email", {
                                             required: "Email is required",
@@ -88,7 +97,7 @@ export function App() {
                         </InputsZone>
                         <BudttonLogin>
                             <Button color="success" type="submit"
-                                variant="outlined">
+                                variant="outlined" >
                                 Login
                             </Button>
                         </BudttonLogin>
