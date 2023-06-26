@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+
 
 
 const MainDivLogin = styled.div`
@@ -41,8 +42,14 @@ const BudttonLogin = styled.div`
   margin-bottom:3px;
 `
 
+const ErrorContent = styled.div`
+color: red;
+`
+
+
 
 export function App() {
+    const [isLoginError, setLoginErrorState] = useState(false);
     const {
         register,
         formState: { errors },
@@ -50,12 +57,19 @@ export function App() {
     } = useForm();
 
 
-    function onSubmit(e) {
-        axios.get('/WeatherForecastNew',() => {})
-        axios.post('/login', {
-            email: e.email,
-            password: e.Password
-        })
+    async function onSubmit(e) {
+        axios.get('/WeatherForecastNew', () => { })
+        try {
+            var result = await axios.post('/login', {
+                email: e.email,
+                password: e.Password
+            })
+            setLoginErrorState(false)
+
+        } catch (e) {
+            setLoginErrorState(true)
+        };
+        console.log(result);
     };
     console.log(errors.email)
     return (
@@ -101,6 +115,7 @@ export function App() {
                                 Login
                             </Button>
                         </BudttonLogin>
+                        {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
                 </form>
             </Box>
