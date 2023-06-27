@@ -14,8 +14,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.AddWeatherForecast();
-
 app.AddLogin();
+app.AddRegister();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,12 +25,14 @@ if (app.Environment.IsDevelopment())
 }
 
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.MapFallbackToFile("index.html");
 app.MapControllers();
 
 app.Run();
-
 

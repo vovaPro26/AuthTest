@@ -9,7 +9,7 @@
 	{
 		public static WebApplication AddLogin(this WebApplication app)
 		{
-			app.MapPost("/login", (LoginRequestDto login) =>
+			app.MapPost("/api/login", (LoginRequestDto login) =>
 			{
 				if (login.Email == "volodymyr.nik@gmail.com" && login.Password == "Qazwsxedc123!")
 				{
