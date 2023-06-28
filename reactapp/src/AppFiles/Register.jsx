@@ -49,6 +49,15 @@ color: red;
 
 
 export function Register() {
+    const isEven = (score, a, b) => {
+        console.log(score);
+        console.log(a);
+        if (a.Password === score) {
+            return true;
+        } else {
+            return "The password does not match";
+        }
+    }
     const [isRegisterError, setRegisterErrorState] = useState(false);
     const {
         register,
@@ -68,6 +77,7 @@ export function Register() {
             setRegisterErrorState(true)
         };
         console.log(result);
+
     };
     return (
         <MainDivRegister>
@@ -87,6 +97,7 @@ export function Register() {
                                     error={errors.email}
                                     {...register("email", {
                                         required: "Email is required",
+                                        
                                         pattern: {
                                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                             message: "Email is invalid"
@@ -100,6 +111,16 @@ export function Register() {
                                         pattern: {
                                             value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
                                             message: "Password is incorrect"
+                                        }
+                                    })} />
+                            </Inputs>
+                            <Inputs>
+                                <TextField error={errors.RePassword} id="RePassword" label="Re enter Password" variant="filled" helperText={errors.RePassword && errors.RePassword.message}
+                                    {...register("RePassword", {
+                                        required: "Password is required",
+                                        validate: isEven,
+                                        pattern: {
+                                            message: "The password does not match"
                                         }
                                     })} />
                             </Inputs>

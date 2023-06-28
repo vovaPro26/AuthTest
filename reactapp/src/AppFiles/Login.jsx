@@ -102,7 +102,8 @@ export function Login() {
                                                 message: "Password is incorrect"
                                             }
                                         })} />
-                                </Inputs>
+                            </Inputs>
+                            
                             </div>
                         </InputsZone>
                         <BudttonLogin>
