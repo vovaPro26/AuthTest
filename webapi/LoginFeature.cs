@@ -1,4 +1,8 @@
-﻿namespace webapi
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+namespace webapi
 {
 	class LoginRequestDto
 	{
@@ -13,7 +17,17 @@
 			{
 				if (login.Email == "volodymyr.nik@gmail.com" && login.Password == "Qazwsxedc123!")
 				{
-					return Results.NoContent();
+					var claims = new List<Claim> { new Claim(ClaimTypes.Email, login.Email) };
+					var jwt = new JwtSecurityToken(
+					issuer: AuthOptions.ISSUER,
+					audience: AuthOptions.AUDIENCE,
+					claims: claims,
+					expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+					signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
+					));
+
+					return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
+					
 				}
 				else
 				{
