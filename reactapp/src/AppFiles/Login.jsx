@@ -50,6 +50,8 @@ color: red;
 
 export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
+    const [result, setResult] = useState(false);
+    const [responses, setResponse] = useState(false);
     const {
         register,
         formState: { errors },
@@ -58,10 +60,11 @@ export function Login() {
 
     async function onSubmit(e) {
         try {
-            var result = await axios.post('/api/login', {
+            var results = await axios.post('/api/login', {
                 email: e.email,
                 password: e.Password
             })
+            setResult(results)
             setLoginErrorState(false)
 
         } catch (e) {
@@ -69,8 +72,24 @@ export function Login() {
         };
         console.log(result);
     };
+    async function GetData() {
+        try {
+
+            const data = await axios.get('/api/data', {
+                headers: {
+                    'Authorization': `Bearer ${result.data}`
+                }
+            })
+            setLoginErrorState(false)
+            setResponse(data.data)
+        } catch (e) {
+            setLoginErrorState(true)
+        }
+
+    }
     return (
-        <MainDivLogin>
+        <>
+            <MainDivLogin>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Panel>
                         <LoginStyle >
@@ -102,8 +121,8 @@ export function Login() {
                                                 message: "Password is incorrect"
                                             }
                                         })} />
-                            </Inputs>
-                            
+                                </Inputs>
+
                             </div>
                         </InputsZone>
                         <BudttonLogin>
@@ -115,6 +134,13 @@ export function Login() {
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
                 </form>
-        </MainDivLogin>
+            </MainDivLogin>
+            <Button onClick={GetData}>
+                GetData
+            </Button>
+            <div>
+                {responses}
+            </div>
+        </>
     )
 }

@@ -27,7 +27,7 @@ namespace webapi
 					));
 
 					return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
-					
+
 				}
 				else
 				{
