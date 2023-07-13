@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
+import { Button, TextField} from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
@@ -51,14 +51,15 @@ const ErrorContent = styled.div`
 color: red;
 `
 
-export const AuthorizedState = atom({
-    key: 'AuthorizedState', // unique ID (with respect to other atoms/selectors)
+
+export const AuthorizedStateTokenData = atom({
+    key: 'AuthorizedStateTokenData', // unique ID (with respect to other atoms/selectors)
     default: '', // default value (aka initial value)
 });
 export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
-    const [result, setResult] = useState(false);
-    const [responses, setResponse] = useRecoilState(AuthorizedState);
+    const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
+
     const {
         register,
         formState: { errors },
@@ -71,29 +72,15 @@ export function Login() {
                 email: e.email,
                 password: e.Password
             })
-            setResult(results)
+            setAccsessToken(results.data)
             setLoginErrorState(false)
 
         } catch (e) {
             setLoginErrorState(true)
         };
-        console.log(result);
+        console.log(accsessToken);
     };
-    async function GetData() {
-        try {
-
-            const data = await axios.get('/api/data', {
-                headers: {
-                    'Authorization': `Bearer ${result.data}`
-                }
-            })
-            setLoginErrorState(false)
-            setResponse(data.data)
-        } catch (e) {
-            setLoginErrorState(true)
-        }
-
-    }
+    
     return (
         <>
             <MainDivLogin>
@@ -142,12 +129,7 @@ export function Login() {
                     </Panel>
                 </form>
             </MainDivLogin>
-            <Button onClick={GetData}>
-                GetData
-            </Button>
-            <div>
-                {responses}
-            </div>
+
             <Link to="/">Home</Link>
             <Outlet/>
         </>
