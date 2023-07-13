@@ -5,7 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-
+import { Outlet, Link } from "react-router-dom";
+import {
+    atom,
+    useRecoilState
+} from 'recoil';
 
 const MainDivLogin = styled.div`
     display: flex;
@@ -47,11 +51,14 @@ const ErrorContent = styled.div`
 color: red;
 `
 
-
+export const AuthorizedState = atom({
+    key: 'AuthorizedState', // unique ID (with respect to other atoms/selectors)
+    default: '', // default value (aka initial value)
+});
 export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
     const [result, setResult] = useState(false);
-    const [responses, setResponse] = useState(false);
+    const [responses, setResponse] = useRecoilState(AuthorizedState);
     const {
         register,
         formState: { errors },
@@ -141,6 +148,8 @@ export function Login() {
             <div>
                 {responses}
             </div>
+            <Link to="/">Home</Link>
+            <Outlet/>
         </>
     )
 }
