@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -13,9 +14,10 @@ namespace webapi
 	{
 		public static WebApplication AddLogin(this WebApplication app)
 		{
-			app.MapPost("/api/login", (LoginRequestDto login) =>
+			app.MapPost("/api/login", (LoginRequestDto login, MyUserManager manager) =>
 			{
-				if (login.Email == "volodymyr.nik@gmail.com" && login.Password == "Qazwsxedc123!")
+				MyUser? myUser = manager.Find(login.Email, login.Password);
+				if (myUser != null)
 				{
 					var claims = new List<Claim> { new Claim(ClaimTypes.Email, login.Email) };
 					var jwt = new JwtSecurityToken(
@@ -31,7 +33,7 @@ namespace webapi
 				}
 				else
 				{
-					return Results.BadRequest();
+					return Results.NotFound();
 				}
 			});
 			return app;

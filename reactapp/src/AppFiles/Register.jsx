@@ -71,10 +71,18 @@ export function Register() {
                 email: e.email,
                 password: e.Password
             })
-            setRegisterErrorState(false)
+            setRegisterErrorState("")
 
         } catch (e) {
-            setRegisterErrorState(true)
+
+            switch (e.response.status) {
+                case (409):
+                    setRegisterErrorState("User with such email already exist");
+                    break;
+                default:
+                    setRegisterErrorState("Unknown error!");
+
+            }
         };
         console.log(result);
 
@@ -132,7 +140,7 @@ export function Register() {
                             Register
                         </Button>
                     </BudttonReg>
-                    {isRegisterError && <ErrorContent >The Register is incorrect</ErrorContent>}
+                    {isRegisterError && <ErrorContent >{isRegisterError}</ErrorContent>}     
                 </Panel>
             </form>
         </MainDivRegister>

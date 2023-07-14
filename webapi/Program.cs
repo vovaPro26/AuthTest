@@ -32,6 +32,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<MyUserManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,7 +55,7 @@ app.AddWeatherForecast();
 app.AddLogin();
 app.AddRegister();
 
-app.Map("/api/data",[Authorize]  (HttpContext context) => $"Hello World!");
+app.MapGet("/api/data",[Authorize]  (HttpContext context) => $"Hello World!");
 
 
 app.UseHttpsRedirection();

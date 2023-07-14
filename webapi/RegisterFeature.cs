@@ -9,16 +9,25 @@
 	{
 		public static WebApplication AddRegister(this WebApplication app)
 		{
-			app.MapPost("/api/register", (RegisterRequestDto register) =>
+			app.MapPost("/api/register", (RegisterRequestDto register, MyUserManager manager) =>
 			{
-				if (register.Email == "volodymyr.nik@gmail.com" && register.Password == "Qazwsxedc123!")
+				MyUser? myUser = manager.FindByEmail(register.Email);
+				if (myUser == null)
 				{
-					return Results.NoContent();
+					var user = new MyUser()
+					{
+						Email = register.Email,
+						Password = register.Password
+					};
+					manager.AddUser(user);
+					return Results.Ok();
+
 				}
 				else
 				{
-					return Results.BadRequest();
+					return Results.Conflict();
 				}
+
 			});
 			return app;
 		}

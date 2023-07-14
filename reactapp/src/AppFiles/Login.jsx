@@ -73,10 +73,17 @@ export function Login() {
                 password: e.Password
             })
             setAccsessToken(results.data)
-            setLoginErrorState(false)
+            setLoginErrorState("")
 
         } catch (e) {
-            setLoginErrorState(true)
+            switch (e.response.status) {
+                case (404):
+                    setLoginErrorState("Invalid login");
+                    break;
+                default:
+                    setLoginErrorState("Unknown error!");
+
+            }
         };
         console.log(accsessToken);
     };
