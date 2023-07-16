@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
 using webapi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +37,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<MyUserManager>();
 
+builder.Services.AddDbContext<AuthTestDbContext>(
+options =>
+	options.UseSqlServer(
+			builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,6 +70,7 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
 
 public class AuthOptions
 {

@@ -1,9 +1,11 @@
-﻿namespace webapi
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace webapi
 {
-	public class MyUser
+	public class MyUser : IdentityUser
 	{
-		public string Email { get; set; }
-		public string Password { get; set; }
+		//public string Email { get; set; }
+		public string? Password { get; set; }
 	}
 	public class MyUserManager
 	{
