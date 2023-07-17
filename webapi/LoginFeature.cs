@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,12 +15,16 @@ namespace webapi
 	{
 		public static WebApplication AddLogin(this WebApplication app)
 		{
-			app.MapPost("/api/login", (LoginRequestDto login, MyUserManager manager) =>
+			app.MapPost("/api/login", async(LoginRequestDto login, UserManager<MyUser> manager) =>
 			{
-				MyUser? myUser = manager.Find(login.Email, login.Password);
+				MyUser? myUser = await manager.FindByEmailAsync(login.Email);
 				if (myUser != null)
 				{
-					var claims = new List<Claim> { new Claim(ClaimTypes.Email, login.Email) };
+					var claims = new List<Claim> {
+						new Claim("id", myUser.Id),
+						new Claim(ClaimTypes.Name, login.Email) ,
+						new Claim(ClaimTypes.Email, login.Email)
+					};
 					var jwt = new JwtSecurityToken(
 					issuer: AuthOptions.ISSUER,
 					audience: AuthOptions.AUDIENCE,

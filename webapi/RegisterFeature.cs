@@ -1,4 +1,8 @@
-﻿namespace webapi
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+
+namespace webapi
 {
 	class RegisterRequestDto
 	{
@@ -9,17 +13,18 @@
 	{
 		public static WebApplication AddRegister(this WebApplication app)
 		{
-			app.MapPost("/api/register", (RegisterRequestDto register, MyUserManager manager) =>
+			app.MapPost("/api/register", async (RegisterRequestDto register, [FromServices] UserManager<MyUser> manager) =>
 			{
-				MyUser? myUser = manager.FindByEmail(register.Email);
+				MyUser? myUser = await manager.FindByEmailAsync(register.Email);
 				if (myUser == null)
 				{
 					var user = new MyUser()
 					{
+						UserName = register.Email, 
 						Email = register.Email,
 						Password = register.Password
 					};
-					manager.AddUser(user);
+					var res = await manager.CreateAsync(user, register.Password);
 					return Results.Ok();
 
 				}
