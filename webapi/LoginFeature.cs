@@ -15,26 +15,34 @@ namespace webapi
 	{
 		public static WebApplication AddLogin(this WebApplication app)
 		{
-			app.MapPost("/api/login", async(LoginRequestDto login, UserManager<MyUser> manager) =>
+			app.MapPost("/api/login", async (LoginRequestDto login, UserManager<IdentityUser> manager) =>
 			{
-				MyUser? myUser = await manager.FindByEmailAsync(login.Email);
+				IdentityUser? myUser = await manager.FindByEmailAsync(login.Email);
 				if (myUser != null)
 				{
-					var claims = new List<Claim> {
+					if (await manager.CheckPasswordAsync(myUser, login.Password))
+					{
+
+						var claims = new List<Claim> {
 						new Claim("id", myUser.Id),
 						new Claim(ClaimTypes.Name, login.Email) ,
 						new Claim(ClaimTypes.Email, login.Email)
 					};
-					var jwt = new JwtSecurityToken(
-					issuer: AuthOptions.ISSUER,
-					audience: AuthOptions.AUDIENCE,
-					claims: claims,
-					expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-					signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
-					));
+						var jwt = new JwtSecurityToken(
+						issuer: AuthOptions.ISSUER,
+						audience: AuthOptions.AUDIENCE,
+						claims: claims,
+						expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+						signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
+						));
 
-					return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
+						return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
 
+					}
+					else
+					{
+						return Results.NotFound();
+					}
 				}
 				else
 				{

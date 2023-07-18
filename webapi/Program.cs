@@ -38,10 +38,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddIdentityCore<MyUser>()
+builder.Services.AddIdentityCore<IdentityUser>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
 
-builder.Services.AddSingleton<MyUserManager>();
+
 
 
 var app = builder.Build();

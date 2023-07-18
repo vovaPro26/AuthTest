@@ -13,16 +13,15 @@ namespace webapi
 	{
 		public static WebApplication AddRegister(this WebApplication app)
 		{
-			app.MapPost("/api/register", async (RegisterRequestDto register, [FromServices] UserManager<MyUser> manager) =>
+			app.MapPost("/api/register", async (RegisterRequestDto register, [FromServices] UserManager<IdentityUser> manager) =>
 			{
-				MyUser? myUser = await manager.FindByEmailAsync(register.Email);
+				IdentityUser? myUser = await manager.FindByEmailAsync(register.Email);
 				if (myUser == null)
 				{
-					var user = new MyUser()
+					var user = new IdentityUser()
 					{
 						UserName = register.Email, 
-						Email = register.Email,
-						Password = register.Password
+						Email = register.Email
 					};
 					var res = await manager.CreateAsync(user, register.Password);
 					return Results.Ok();
