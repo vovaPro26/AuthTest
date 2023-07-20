@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Login } from './AppFiles/Login';
 import { Home } from './AppFiles/Home';
 import { Register } from './AppFiles/Register';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 
@@ -15,6 +15,7 @@ import { Register } from './AppFiles/Register';
 export function App() {
     
     return (
+        
         
             <BrowserRouter>
                 <Routes>
@@ -24,6 +25,7 @@ export function App() {
                     <Route path="register" element={<Register />} />
                 </Routes>
             </BrowserRouter>
+        
        
     )
 }

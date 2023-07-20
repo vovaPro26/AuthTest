@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -10,6 +10,11 @@ import {
     atom,
     useRecoilState
 } from 'recoil';
+import GoogleLoginComponent from '../Google';
+
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleSignin from '../AuthGoogle2';
+
 
 const MainDivLogin = styled.div`
     display: flex;
@@ -60,6 +65,7 @@ export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
     const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
 
+
     const {
         register,
         formState: { errors },
@@ -86,10 +92,12 @@ export function Login() {
             }
         };
         console.log(accsessToken);
+
     };
     
     return (
         <>
+                
             <MainDivLogin>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Panel>
@@ -134,6 +142,10 @@ export function Login() {
                         </BudttonLogin>
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
+                    <GoogleSignin />
+                    
+
+                    
                 </form>
             </MainDivLogin>
 
