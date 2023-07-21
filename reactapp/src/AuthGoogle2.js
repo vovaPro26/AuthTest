@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+
+import axios from 'axios';
 //import { AppDispatch } from "../../../redux/storeTypes";
 
 
@@ -26,22 +27,16 @@ export default function GoogleSignin() {
         // Implement your login mutations and logic here.
         // Set cookies, call your backend, etc.
         let token = res.credential
-        let decoded = jwt_decode(token);
-
-        let givenName = decoded.given_name
-        let email = decoded.email
-        let familyName = decoded.family_name
-        let credential = res.credential
-        localStorage.givenName = givenName;
-        localStorage.familyName = familyName;
-        localStorage.Email = email;
-        localStorage.credential = credential;
+        console.log(token)
+        await axios.post('/api/googlelogin', {
+            googleToken: token
+        })
+        
         // givenName = decoded.given_name.parse(localStorage.a); // parse to date object
         // Email = decoded.family_name.parse(localStorage.b);
         // familyName = decoded.email.parse(localStorage.b);
         // console.log(givenName - Email - familyName); // now, this will work
         navigate("/")
-        console.log(decoded);
 
         // TODO: retrieve user data
         setUser({ _id: 1 });

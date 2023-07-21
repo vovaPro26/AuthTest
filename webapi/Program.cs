@@ -63,6 +63,7 @@ app.UseAuthorization();
 
 app.AddWeatherForecast();
 app.AddLogin();
+app.AddGoogleLogin();
 app.AddRegister();
 
 app.MapGet("/api/data",[Authorize]  (HttpContext context) => $"Hello World!");

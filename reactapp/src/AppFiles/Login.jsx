@@ -10,7 +10,6 @@ import {
     atom,
     useRecoilState
 } from 'recoil';
-import GoogleLoginComponent from '../Google';
 
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../AuthGoogle2';
