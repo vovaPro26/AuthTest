@@ -141,10 +141,7 @@ export function Login() {
                         </BudttonLogin>
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
-                    <GoogleSignin />
-                    
-
-                    
+                    <GoogleSignin />                
                 </form>
             </MainDivLogin>
 

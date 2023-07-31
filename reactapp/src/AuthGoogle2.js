@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import {
+    atom,
+    useSetRecoilState
+} from 'recoil';
+import { AuthorizedStateTokenData } from './AppFiles/Login';
 import axios from 'axios';
 //import { AppDispatch } from "../../../redux/storeTypes";
 
@@ -19,6 +23,7 @@ const GOOGLE_CLIENT_ID = "273047399993-fvbi5ls1tocl2p4v76gu7kk9rcmo5q3i.apps.goo
 export default function GoogleSignin() {
     const [gsiScriptLoaded, setGsiScriptLoaded] = useState(false)
     const [user, setUser] = useState({ _id: undefined })
+    const setAccsessToken = useSetRecoilState(AuthorizedStateTokenData);
 
     let navigate = useNavigate()
 
@@ -28,9 +33,10 @@ export default function GoogleSignin() {
         // Set cookies, call your backend, etc.
         let token = res.credential
         console.log(token)
-        await axios.post('/api/googlelogin', {
+        var result = await axios.post('/api/googlelogin', {
             googleToken: token
         })
+        setAccsessToken(result.data)
         
         // givenName = decoded.given_name.parse(localStorage.a); // parse to date object
         // Email = decoded.family_name.parse(localStorage.b);
