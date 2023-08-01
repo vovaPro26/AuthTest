@@ -26,7 +26,8 @@ namespace webapi
 						var claims = new List<Claim> {
 						new Claim("id", myUser.Id),
 						new Claim(ClaimTypes.Name, login.Email) ,
-						new Claim(ClaimTypes.Email, login.Email)
+						new Claim(ClaimTypes.Email, login.Email),
+						new Claim(ClaimTypes.Role, "Admin")
 					};
 						var jwt = new JwtSecurityToken(
 						issuer: AuthOptions.ISSUER,

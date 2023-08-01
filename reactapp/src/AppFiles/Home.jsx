@@ -47,6 +47,35 @@ export function Home() {
         }
 
     }
+    async function GetSecureData() {
+        try {
+            var response = await axios.get('/api/securedata', {
+                headers: {
+                    'Authorization': `Bearer ${authorizedStateToken}`
+                }
+            })
+            setHomeError("");
+            setData(response.data)
+        } catch (e) {
+            if (!e.response) {
+                setHomeError("Can't access server");
+                return;
+            }
+
+            switch (e.response.status) {
+                case (401):
+                    setHomeError("You are not authorized");
+                    break;
+                case (500):
+                    setHomeError("Error! Please contact administrator");
+                    break;
+                default:
+                    setHomeError("Unknown error!");
+
+            }
+        }
+
+    }
     return (
         <div>
             <li>
@@ -56,7 +85,10 @@ export function Home() {
                 <Link to="/register">Register</Link>
             </li>
             <Button onClick={GetData}>
-                GetData
+                Get Data
+            </Button>
+            <Button onClick={GetSecureData}>
+                Get Secured
             </Button>
             <div>
                 {data}

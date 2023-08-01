@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Text;
 
 using webapi;
@@ -39,6 +40,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddIdentityCore<IdentityUser>()
+	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
 
 
@@ -66,8 +68,10 @@ app.AddLogin();
 app.AddGoogleLogin();
 app.AddRegister();
 
-app.MapGet("/api/data",[Authorize]  (HttpContext context) => $"Hello World!");
-
+app.MapGet("/api/data", [Authorize(Roles = "User")] (HttpContext context) => $"Hello User!");
+	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
+//app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
+app.MapGet("/api/securedata", [Authorize(Roles = "Admin")] (HttpContext context) => $"Hello Admin!");
 
 app.UseHttpsRedirection();
 app.MapControllers();
