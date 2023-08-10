@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Button, TextField} from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
@@ -13,6 +13,13 @@ import {
 
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../AuthGoogle2';
+import { LoginSocialFacebook } from 'reactjs-social-login';
+import { FacebookLoginButton } from 'react-social-login-buttons'
+
+
+
+
+
 
 
 const MainDivLogin = styled.div`
@@ -65,6 +72,9 @@ export function Login() {
     const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
 
 
+    const responseFacebook = (response) => {
+        console.log(response);
+    }
     const {
         register,
         formState: { errors },
@@ -93,10 +103,10 @@ export function Login() {
         console.log(accsessToken);
 
     };
-    
+
     return (
         <>
-                
+
             <MainDivLogin>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Panel>
@@ -141,12 +151,23 @@ export function Login() {
                         </BudttonLogin>
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
-                    <GoogleSignin />                
+                    <GoogleSignin />
+                    <LoginSocialFacebook
+                        appId='873841367435786'
+                        onResolve={(response) => {
+                            console.log(response);
+                        }}
+                        onReject={(error) => {
+                            console.log(error);
+                        } }>
+                        <FacebookLoginButton/>
+                    </LoginSocialFacebook>
                 </form>
+
             </MainDivLogin>
 
             <Link to="/">Home</Link>
-            <Outlet/>
+            <Outlet />
         </>
     )
 }
