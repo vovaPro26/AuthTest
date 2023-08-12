@@ -10,7 +10,7 @@ import {
     atom,
     useRecoilState
 } from 'recoil';
-
+import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../AuthGoogle2';
 import { LoginSocialFacebook } from 'reactjs-social-login';
@@ -70,6 +70,7 @@ export const AuthorizedStateTokenData = atom({
 export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
     const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
+    let navigate = useNavigate()
 
 
     const responseFacebook = (response) => {
@@ -154,8 +155,12 @@ export function Login() {
                     <GoogleSignin />
                     <LoginSocialFacebook
                         appId='873841367435786'
-                        onResolve={(response) => {
-                            console.log(response);
+                        onResolve={async (response) => {
+                            console.log(response.data.accessToken);
+                            await axios.post('/api/facebooklogin', {
+                                facebookToken: response.data.accessToken
+                            })
+                            navigate("/")
                         }}
                         onReject={(error) => {
                             console.log(error);

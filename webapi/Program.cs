@@ -39,6 +39,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 builder.Services.AddIdentityCore<IdentityUser>()
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
@@ -66,6 +67,7 @@ app.UseAuthorization();
 app.AddWeatherForecast();
 app.AddLogin();
 app.AddGoogleLogin();
+app.AddFacebookLogin();
 app.AddRegister();
 
 app.MapGet("/api/data", [Authorize(Roles = "User")] (HttpContext context) => $"Hello User!");
