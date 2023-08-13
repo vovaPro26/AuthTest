@@ -1,5 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
+using System.Security.Claims;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace webapi
 {
@@ -10,6 +15,18 @@ namespace webapi
 
 		[JsonPropertyName("token_type")]
 		public string? TokenType { get; set; }
+	}
+
+	public class FacebookUserData
+	{
+		[JsonPropertyName("id")]
+		public string UserId { get; set; }
+		[JsonPropertyName("name")]
+		public string UserName { get; set; }
+		[JsonPropertyName("first_name")]
+		public string FirstName { get; set; }
+		[JsonPropertyName("email")]
+		public string UserEmail { get; set; }
 	}
 	public class FacebookTokenValidationData
 	{
@@ -40,31 +57,52 @@ namespace webapi
 	}
 	public static class LoginFacebook
 	{
+		private const string provider = "Facebook";
 		public static WebApplication AddFacebookLogin(this WebApplication app)
 		{
 			app.MapPost("/api/facebooklogin", async (FacebookLoginRequestDto login
-				, UserManager<IdentityUser> manager, 
-				IConfiguration _configuration,
-				IHttpClientFactory _httpClientFactory
+				, UserManager<IdentityUser> manager,
+				FacebookLoginClient loginClient
 				) =>
-			{
-
-				async Task<bool> ValidateFacebookToken(FacebookLoginRequestDto request)
+			{	
+				
+				
+				var userDataResult = await loginClient.GetUserData( login.FacebookToken );
+				if (userDataResult.IsFailed)
 				{
-					var httpClient = _httpClientFactory.CreateClient();
-					var appAccessTokenResponse = await httpClient.GetFromJsonAsync<FacebookAppAccessTokenResponse>($"https://graph.facebook.com/oauth/access_token?client_id={_configuration["Facebook:ClientId"]}&client_secret={_configuration["Facebook:ClientSecret"]}&grant_type=client_credentials");
-					var response =
-						await httpClient.GetFromJsonAsync<FacebookTokenValidationResult>(
-							$"https://graph.facebook.com/debug_token?input_token={request.FacebookToken}&access_token={appAccessTokenResponse!.AccessToken}");
-
-					if (response is null || !response.Data.IsValid)
-					{
-						return false;
-					}
-
-					return true;
+					return Results.BadRequest(userDataResult.Errors); 
 				}
-				await ValidateFacebookToken(login);
+				var userData = userDataResult.Value;
+
+				
+				var info = new UserLoginInfo(provider, userData.UserId, provider);
+				var user = await manager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+				if (user == null)
+				{
+					user = await manager.FindByEmailAsync(userData.UserEmail);
+					if (user == null)
+					{
+						user = new IdentityUser { Email = userData.UserEmail, UserName = userData.UserEmail };
+						await manager.CreateAsync(user);
+						//prepare and send an email for the email confirmation
+
+						var iRes = await manager.AddLoginAsync(user, info);
+					}
+				}
+				var claims = new List<Claim> {
+						new Claim(ClaimTypes.Name, userData.UserName) ,
+						new Claim(ClaimTypes.Email, userData.UserEmail)
+					};
+				var jwt = new JwtSecurityToken(
+				issuer: AuthOptions.ISSUER,
+				audience: AuthOptions.AUDIENCE,
+				claims: claims,
+				expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+				signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
+				));
+				return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
+
 			}
 			);
 			return app;

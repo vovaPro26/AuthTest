@@ -32,7 +32,7 @@ namespace webapi
 
 		private static async Task<IdentityRole> CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
 		{
-			
+
 			var adminRole = await roleManager.FindByNameAsync(roleName);
 			if (adminRole == null)
 			{
@@ -61,10 +61,14 @@ namespace webapi
 					user = await manager.FindByEmailAsync(payload.Email);
 					if (user == null)
 					{
-						user = new IdentityUser { Email = payload.Email, UserName = payload.Name };
-						await manager.CreateAsync(user);
+						user = new IdentityUser { Email = payload.Email, UserName = payload.Email };
+						var crRes = await manager.CreateAsync(user);
+						if (!crRes.Succeeded)
+						{
+							return Results.BadRequest(crRes.Errors);
+						}
 						//prepare and send an email for the email confirmation
-						await manager.AddToRoleAsync(user, "Viewer");
+						//await manager.AddToRoleAsync(user, "Viewer");
 						await manager.AddLoginAsync(user, info);
 					}
 					else
@@ -89,8 +93,8 @@ namespace webapi
 				var userRoles = await manager.GetRolesAsync(user);
 
 				var claims = new List<Claim> {
-						new Claim(ClaimTypes.Name, payload.Email) ,
-						new Claim(ClaimTypes.Email, payload.Name)
+						new Claim(ClaimTypes.Name, payload.Name) ,
+						new Claim(ClaimTypes.Email, payload.Email)
 					};
 				foreach (var role in userRoles)
 				{

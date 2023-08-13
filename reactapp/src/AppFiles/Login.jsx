@@ -155,11 +155,15 @@ export function Login() {
                     <GoogleSignin />
                     <LoginSocialFacebook
                         appId='873841367435786'
+                        fieldsProfile={
+                            'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
+                        }
                         onResolve={async (response) => {
                             console.log(response.data.accessToken);
-                            await axios.post('/api/facebooklogin', {
+                            var result = await axios.post('/api/facebooklogin', {
                                 facebookToken: response.data.accessToken
                             })
+                            setAccsessToken(result.data)
                             navigate("/")
                         }}
                         onReject={(error) => {
