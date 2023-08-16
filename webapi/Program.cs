@@ -45,6 +45,7 @@ builder.Services.AddIdentityCore<IdentityUser>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
 builder.Services.AddTransient<FacebookLoginClient>();
 builder.Services.AddTransient<CreatingRole>();
+builder.Services.AddTransient<Claims>();
 
 
 

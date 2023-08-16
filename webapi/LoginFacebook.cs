@@ -64,6 +64,7 @@ namespace webapi
 				, UserManager<IdentityUser> manager,
 				FacebookLoginClient loginClient,
 				CreatingRole createRole,
+				Claims claim,
 				RoleManager<IdentityRole> _roleManager
 				) =>
 			{
@@ -115,13 +116,7 @@ namespace webapi
 				{
 					claims.Add(new Claim(ClaimTypes.Role, role));
 				}
-				var jwt = new JwtSecurityToken(
-				issuer: AuthOptions.ISSUER,
-				audience: AuthOptions.AUDIENCE,
-				claims: claims,
-				expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-				signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
-				));
+				var jwt = claim.ClaimsReturn(claims);
 				return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
 
 			}

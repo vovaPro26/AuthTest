@@ -30,24 +30,15 @@ namespace webapi
 		}
 
 
-		private static async Task<IdentityRole> CreateRole(RoleManager<IdentityRole> roleManager, string roleName)
-		{
-
-			var adminRole = await roleManager.FindByNameAsync(roleName);
-			if (adminRole == null)
-			{
-				adminRole = new() { Name = roleName, NormalizedName = roleName.ToUpper() };
-				await roleManager.CreateAsync(adminRole);
-			}
-			return adminRole;
-		}
+		
 		public static WebApplication AddGoogleLogin(this WebApplication app)
 		{
 
-			app.MapPost("/api/googlelogin", async (GoogleLoginRequestDto login, UserManager<IdentityUser> manager, RoleManager<IdentityRole> _roleManager) =>
+			app.MapPost("/api/googlelogin", async (GoogleLoginRequestDto login, UserManager<IdentityUser> manager, RoleManager<IdentityRole> _roleManager, CreatingRole createRole,
+				Claims claim) =>
 			{
-				var adminRole = await CreateRole(_roleManager, "Admin");
-				var userRole = await CreateRole(_roleManager, "User");
+				var adminRole = await createRole.CreateRole(_roleManager, "Admin");
+				var userRole = await createRole.CreateRole(_roleManager, "User");
 
 				var payload = await ValidateGoogleToken(login);
 				if (payload == null)
@@ -100,14 +91,8 @@ namespace webapi
 				{
 					claims.Add(new Claim(ClaimTypes.Role, role));
 				}
-				var jwt = new JwtSecurityToken(
-				issuer: AuthOptions.ISSUER,
-				audience: AuthOptions.AUDIENCE,
-				claims: claims,
-				expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-				signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256
-				));
 
+				var jwt = claim.ClaimsReturn(claims);
 				return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
 			});
 			return app;
