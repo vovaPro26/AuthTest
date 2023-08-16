@@ -44,6 +44,7 @@ builder.Services.AddIdentityCore<IdentityUser>()
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
 builder.Services.AddTransient<FacebookLoginClient>();
+builder.Services.AddTransient<CreatingRole>();
 
 
 
@@ -71,7 +72,7 @@ app.AddGoogleLogin();
 app.AddFacebookLogin();
 app.AddRegister();
 
-app.MapGet("/api/data", [Authorize] (HttpContext context) => $"Hello User!");
+app.MapGet("/api/data", [Authorize(Roles ="User")] (HttpContext context) => $"Hello User!");
 	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
 //app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
 app.MapGet("/api/securedata", [Authorize(Roles = "Admin")] (HttpContext context) => $"Hello Admin!");

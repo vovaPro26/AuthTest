@@ -62,11 +62,16 @@ namespace webapi
 		{
 			app.MapPost("/api/facebooklogin", async (FacebookLoginRequestDto login
 				, UserManager<IdentityUser> manager,
-				FacebookLoginClient loginClient
+				FacebookLoginClient loginClient,
+				CreatingRole createRole,
+				RoleManager<IdentityRole> _roleManager
 				) =>
-			{	
-				
-				
+			{
+				var adminRole = await createRole.CreateRole(_roleManager, "Admin");
+				var userRole = await createRole.CreateRole(_roleManager, "User");
+
+
+
 				var userDataResult = await loginClient.GetUserData( login.FacebookToken );
 				if (userDataResult.IsFailed)
 				{
@@ -90,10 +95,26 @@ namespace webapi
 						var iRes = await manager.AddLoginAsync(user, info);
 					}
 				}
+
+				if (user.Email == "voffka.nik@gmail.com")
+				{
+					IdentityResult roleresult = await manager.AddToRoleAsync(user, adminRole.Name);
+				}
+				else
+				{
+					IdentityResult roleresult = await manager.AddToRoleAsync(user, userRole.Name);
+				}
+
+				var userRoles = await manager.GetRolesAsync(user);
+
 				var claims = new List<Claim> {
 						new Claim(ClaimTypes.Name, userData.UserName) ,
 						new Claim(ClaimTypes.Email, userData.UserEmail)
 					};
+				foreach (var role in userRoles)
+				{
+					claims.Add(new Claim(ClaimTypes.Role, role));
+				}
 				var jwt = new JwtSecurityToken(
 				issuer: AuthOptions.ISSUER,
 				audience: AuthOptions.AUDIENCE,

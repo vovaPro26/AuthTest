@@ -81,7 +81,7 @@ namespace webapi
 				//check for the Locked out account
 				//var token = await GenerateToken(user);
 
-				if (user.Email == "voffk.nik@gmail.com")
+				if (user.Email == "voffka.nik@gmail.com")
 				{
 					IdentityResult roleresult = await manager.AddToRoleAsync(user, adminRole.Name);
 				}
