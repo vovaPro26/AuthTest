@@ -69,8 +69,7 @@ app.UseAuthorization();
 
 app.AddWeatherForecast();
 app.AddLogin();
-app.AddGoogleLogin();
-app.AddFacebookLogin();
+app.AddSocialLogin();
 app.AddRegister();
 
 app.MapGet("/api/data", [Authorize(Roles ="User")] (HttpContext context) => $"Hello User!");

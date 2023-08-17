@@ -33,8 +33,9 @@ export default function GoogleSignin() {
         // Set cookies, call your backend, etc.
         let token = res.credential
         console.log(token)
-        var result = await axios.post('/api/googlelogin', {
-            googleToken: token
+        var result = await axios.post('/api/socialLogin', {
+            Token: token,
+            Provider: "Google"
         })
         setAccsessToken(result.data)
         

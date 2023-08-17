@@ -160,8 +160,9 @@ export function Login() {
                         }
                         onResolve={async (response) => {
                             console.log(response.data.accessToken);
-                            var result = await axios.post('/api/facebooklogin', {
-                                facebookToken: response.data.accessToken
+                            var result = await axios.post('/api/socialLogin', {
+                                Token: response.data.accessToken,
+                                Provider: "Facebook"
                             })
                             setAccsessToken(result.data)
                             navigate("/")
