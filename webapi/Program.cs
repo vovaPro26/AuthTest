@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AuthTestDbContext>(
 options =>
-	options.UseSqlServer(
+	options.UseSqlite(
 			builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthorization();
