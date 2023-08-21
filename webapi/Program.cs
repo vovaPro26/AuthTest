@@ -71,8 +71,8 @@ app.AddWeatherForecast();
 app.AddLogin();
 app.AddSocialLogin();
 app.AddRegister();
+app.GetData();
 
-app.MapGet("/api/data", [Authorize(Roles ="User")] (HttpContext context) => $"Hello User!");
 	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
 //app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
 app.MapGet("/api/securedata", [Authorize(Roles = "Admin")] (HttpContext context) => $"Hello Admin!");
