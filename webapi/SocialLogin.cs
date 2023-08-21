@@ -12,15 +12,15 @@ namespace webapi
 {
 	class SosialLoginRequestDto
 	{
-		public string Token { get; set; }
-		public string Provider { get; set; }
+		public required string Token { get; set; }
+		public required string Provider { get; set; }
 	}
 	
 	class SocialData
 	{
-		public string Email { get; set; }
-		public string Name { get; set; }
-		public string Id { get; set; }
+		public required string Email { get; set; }
+		public required string Name { get; set; }
+		public required string Id { get; set; }
 
 	}
 	
