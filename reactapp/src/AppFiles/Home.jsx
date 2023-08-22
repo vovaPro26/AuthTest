@@ -9,6 +9,7 @@ import { AuthorizedStateTokenData } from './Login';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
 import styled from 'styled-components';
+import { Map } from '@googlemaps/react-wrapper'
 
 const ErrorContent = styled.div`
 color: red;
@@ -83,6 +84,9 @@ export function Home() {
             </li>
             <li>
                 <Link to="/register">Register</Link>
+            </li>
+            <li>
+                <Link to="/googlemaps">Login</Link>
             </li>
             <Button onClick={GetData}>
                 Get Data
