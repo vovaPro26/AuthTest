@@ -8,7 +8,7 @@ import { Login } from './AppFiles/Login';
 import { Home } from './AppFiles/Home';
 import { Register } from './AppFiles/Register';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleMaps } from './AppFiles/GoogleMaps';
+import GoogleMaps  from './AppFiles/GoogleMaps';
 
 
 
