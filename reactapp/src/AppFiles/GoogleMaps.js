@@ -127,6 +127,9 @@ class GoogleMaps extends Component {
                         onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
                     />
                 </div>
+                <div>
+                    
+                </div>
             </div>
         );
     }

@@ -9,7 +9,8 @@ import { Home } from './AppFiles/Home';
 import { Register } from './AppFiles/Register';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleMaps  from './AppFiles/GoogleMaps';
-
+import { OpenStreetMap } from './AppFiles/OpenStreetMaps';
+import "./styles.css";
 
 
 
@@ -25,6 +26,7 @@ export function App() {
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="googlemaps" element={<GoogleMaps />} />
+                <Route path="openstreetmaps" element={<OpenStreetMap />} />
             </Routes>
         </BrowserRouter>
 

@@ -86,7 +86,10 @@ export function Home() {
                 <Link to="/register">Register</Link>
             </li>
             <li>
-                <Link to="/googlemaps">Login</Link>
+                <Link to="/googlemaps">Google Map</Link>
+            </li>
+            <li>
+                <Link to="/openstreetmaps">Open Street Map</Link>
             </li>
             <Button onClick={GetData}>
                 Get Data
