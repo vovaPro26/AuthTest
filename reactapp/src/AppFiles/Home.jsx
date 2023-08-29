@@ -91,6 +91,9 @@ export function Home() {
             <li>
                 <Link to="/openstreetmaps">Open Street Map</Link>
             </li>
+            <li>
+                <Link to="/openstreetmaps2">Open Street Map 2</Link>
+            </li>
             <Button onClick={GetData}>
                 Get Data
             </Button>
