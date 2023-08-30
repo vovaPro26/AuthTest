@@ -6,14 +6,14 @@ import "leaflet/dist/leaflet.css"
 import { OSRMDecoding } from "./DecodeOSRMGeometry";
 
 
-export function OpenStreetMap() {
+var cordinateArr_ = await OSRMDecoding()
+export  function OpenStreetMap() {
     const customIcon = new Icon({
         iconUrl: "Mark.png",
         iconSize: [50, 50]
     })
     const limeOptions = { color: 'lime' }
 
-    var cordinateArr_ = OSRMDecoding()
     console.log(cordinateArr_)
     //var cordinateArr = cordinateArr_.map((cordinateArr_) => )
     return (
