@@ -1,9 +1,11 @@
 
-import { OSRMDecoding } from "./DecodeOSRMGeometry";
-import {
-    useQuery
-} from '@tanstack/react-query'
 
+import {
+    useQuery,
+    useMutation
+} from '@tanstack/react-query'
+import axios from 'axios';
+import getRoute from "./getRoute";
 
 export function GetRouteQuery(cordinateArr) {
     console.log(cordinateArr.length)
@@ -12,8 +14,19 @@ export function GetRouteQuery(cordinateArr) {
         enabled: isEnabled,
         queryKey: ['repoData', ...cordinateArr],
         queryFn: async () => {
-            var cordinateArr_ = await OSRMDecoding(cordinateArr[0].replace(/\s+/g, ''), cordinateArr[1].replace(/\s+/g, ''))
-            return cordinateArr_
+            var resGetRoute = await getRoute(cordinateArr[0].replace(/\s+/g, ''), cordinateArr[1].replace(/\s+/g, ''))
+            return resGetRoute
+        }
+    })
+}
+
+export function AddRouteMutation(cordinateString) {
+    return useMutation({
+        mutationKey: ['postData'],
+        mutationFn: async () => {
+            var result = axios.post('/api/addroute', {
+                cordinateString: cordinateString                  
+            })
         }
     })
 }
