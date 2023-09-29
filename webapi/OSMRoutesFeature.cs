@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi
@@ -41,8 +42,13 @@ namespace webapi
 	{
 		public decimal Distance { get; set; }
 		public string Hint { get; set; }
-		public IEnumerable<object> Location { get; set; }
+		public IEnumerable<double> Location { get; set; }
 		public string Name { get; set; }
+	}
+	public class Locations
+	{
+		public double Lat { get; set; }
+		public double Lng { get; set; }
 	}
 
 	public class RouteData
@@ -61,7 +67,17 @@ namespace webapi
 		{
 			app.MapPost("/api/addroute", async ([FromBody]RouteRequestDto route) =>
 			{
-				Console.WriteLine(route);
+				Console.WriteLine(route.RouteData.Routes);
+				foreach (var i in route.RouteData.Routes)
+				{
+					Debug.WriteLine(i);
+				}
+				var geometry = route.RouteData.Routes
+					.SelectMany(u => u.Legs)
+					.SelectMany(u => u.Steps)
+					.Select(u => u.Geometry)
+					.ToList();
+				var starnAndEndLocation = route.RouteData.Waypoints.Select(u => u.Location).ToList();
 			});
 			return app;
 		}
