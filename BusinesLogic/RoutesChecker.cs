@@ -53,7 +53,7 @@
 		public decimal CheckRoute(Route driverRoute, Route passengerRoute)
 		{
 			if (driverRoute == passengerRoute)
-			{
+			 {
 				return 100m;
 			}
 			else
@@ -61,6 +61,5 @@
 				return 90m;
 			}
 		}
-		
 	}
 }

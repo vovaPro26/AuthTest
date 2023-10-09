@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinesLogic
 {
 	public record class Location(double lat, double lng);
+	public record class LocationWithDistance(double lat, double lng, double distance);
 	public static class GooglePolylineConverter
 	{
 		/// <summary>
@@ -106,6 +109,24 @@ namespace BusinesLogic
 			}
 
 			return str.ToString();
+		}
+	}
+	public class CheckDecodedRoute
+	{
+		public double CheckRouteProcents(List<LocationWithDistance> driverLocations, List<LocationWithDistance> passangerLocations)
+		{
+			var driverDistanse = driverLocations
+				.Select(pl => pl.distance)
+				.Sum();
+			
+			var bothDistanse = driverLocations
+				.Join(passangerLocations,
+						dr => new Location(dr.lat, dr.lng),
+						pl => new Location(pl.lat, pl.lng),
+						(dr, pl) => pl.distance)
+				.Sum();
+			
+			return Math.Round(bothDistanse / driverDistanse * 100);
 		}
 	}
 }
