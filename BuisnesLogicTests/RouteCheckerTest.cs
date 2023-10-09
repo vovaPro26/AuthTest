@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BusinesLogic;
+using FluentAssertions;
 
 namespace BuisnesLogicTests
 {
@@ -64,6 +65,10 @@ namespace BuisnesLogicTests
 		[Fact]
 		public void TestCheckDecode_DecodesAreSame_ReturnTrue()
 		{
+			//var expectedResult = new List<List<Location>>
+			//{
+			//};
+
 			var expectedResult = new List<Location>
 			{
 				new Location(50.27121,30.44296),
@@ -80,5 +85,85 @@ namespace BuisnesLogicTests
 			//var result = decodeChecker.CheckDecode(pointRes, expectedResult);
 			Assert.Equal(expectedResult, pointRes);
 		}
+		[Fact]
+		public void TestCheckDecode_EncodesAreSame()
+		{
+			var driverEncodedPolyline = "aryqHo{xxDe@}BaAqEa@kBu@wB{@}Bg@eBg@sAO_@";
+			var passangerEncodedPolyline = "aryqHo{xxDe@}BaAqEa@kBu@wB{@}Bg@eBg@sAO_@";
+
+			Assert.Equal(driverEncodedPolyline, passangerEncodedPolyline);
+		}
+
+		[Fact]
+		public void TestCheckDecodeLists_DecodeListsAreSame_ReturnTrue()
+		{
+			var expectedResult = new List<List<Location>>
+			{
+				new List<Location>
+				{
+					new Location(50.27121,30.44296),
+					new Location(50.27140,30.44359),
+					new Location(50.27173,30.44464),
+					new Location(50.27190,30.44518),
+					new Location(50.27217,30.44578),
+					new Location(50.27247,30.44641),
+					new Location(50.27267,30.44692),
+					new Location(50.27287,30.44734),
+					new Location(50.27295,30.44750)
+				},
+				new List<Location>
+				{
+					new Location(50.27121,30.44296),
+					new Location(50.27140,30.44359),
+					new Location(50.27173,30.44464),
+					new Location(50.27190,30.44518),
+					new Location(50.27217,30.44578),
+					new Location(50.27247,30.44641),
+					new Location(50.27267,30.44692),
+					new Location(50.27287,30.44734),
+					new Location(50.27295,30.44750)
+				}
+			};
+			var pointRes = GooglePolylineConverter.Decode("aryqHo{xxDe@}BaAqEa@kBu@wB{@}Bg@eBg@sAO_@").ToList();
+			var pointRes2 = GooglePolylineConverter.Decode("aryqHo{xxDe@}BaAqEa@kBu@wB{@}Bg@eBg@sAO_@").ToList();
+			var Result = new List<List<Location>> { pointRes, pointRes2 };
+			Assert.Equal(expectedResult, Result);
+		}
+		[Fact]
+		public void TestCheckDecode_FindProcentOfTwoRoutes_ProcentsAreHundret()
+		{
+			var decodeChecker = new CheckDecodedRoute();
+			var firstRoute = new List<LocationWithDistance>
+				{
+					new LocationWithDistance(50.27121,30.44296,19),
+					new LocationWithDistance(50.27140,30.44359,200),
+					new LocationWithDistance(50.27173,30.44464,29),
+					new LocationWithDistance(50.27190,30.44518,34),
+					new LocationWithDistance(50.27217,30.44578,33),
+					new LocationWithDistance(50.27247,30.44641,91),
+					new LocationWithDistance(50.27267,30.44692,82),
+					new LocationWithDistance(50.27287,30.44734,93),
+					new LocationWithDistance(50.27295,30.44750,64)
+				};
+			var secondRoute = new List<LocationWithDistance>
+				{
+					new LocationWithDistance(50.27121,30.44296,19),
+					new LocationWithDistance(50.27140,30.44359,200),
+					new LocationWithDistance(50.27173,30.44464,29),
+					new LocationWithDistance(50.27190,30.44518,34),
+					new LocationWithDistance(50.27217,30.44578,33),
+					new LocationWithDistance(50.27247,30.44641,91),
+					new LocationWithDistance(50.27267,30.44692,82),
+					new LocationWithDistance(50.27287,30.44734,93),
+					new LocationWithDistance(50.27295,30.44750,64)
+				};
+			var result = decodeChecker.CheckRouteProcents(firstRoute, secondRoute);
+
+			// Assert
+
+			result.Should().Be(100);
+
+		}
 	}
+
 }
