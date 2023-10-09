@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Text;
 
 using webapi;
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AuthTestDbContext>(
 options =>
-	options.UseSqlServer(
+	options.UseSqlite(
 			builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthorization();
@@ -38,8 +39,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 builder.Services.AddIdentityCore<IdentityUser>()
+	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<AuthTestDbContext>();
+builder.Services.AddTransient<FacebookLoginClient>();
+builder.Services.AddTransient<CreatingRole>();
+builder.Services.AddTransient<Claims>();
 
 
 
@@ -63,10 +69,14 @@ app.UseAuthorization();
 
 app.AddWeatherForecast();
 app.AddLogin();
+app.AddSocialLogin();
 app.AddRegister();
+app.GetData();
+app.AddRoute();
 
-app.MapGet("/api/data",[Authorize]  (HttpContext context) => $"Hello World!");
-
+	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
+//app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
+app.MapGet("/api/securedata", [Authorize(Roles = "Admin")] (HttpContext context) => $"Hello Admin!");
 
 app.UseHttpsRedirection();
 app.MapControllers();

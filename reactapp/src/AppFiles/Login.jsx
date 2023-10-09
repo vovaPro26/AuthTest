@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Button, TextField} from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
@@ -10,6 +10,17 @@ import {
     atom,
     useRecoilState
 } from 'recoil';
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleSignin from '../AuthGoogle2';
+import { LoginSocialFacebook } from 'reactjs-social-login';
+import { FacebookLoginButton } from 'react-social-login-buttons'
+
+
+
+
+
+
 
 const MainDivLogin = styled.div`
     display: flex;
@@ -59,7 +70,12 @@ export const AuthorizedStateTokenData = atom({
 export function Login() {
     const [isLoginError, setLoginErrorState] = useState(false);
     const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
+    let navigate = useNavigate()
 
+
+    const responseFacebook = (response) => {
+        console.log(response);
+    }
     const {
         register,
         formState: { errors },
@@ -86,10 +102,12 @@ export function Login() {
             }
         };
         console.log(accsessToken);
+
     };
-    
+
     return (
         <>
+
             <MainDivLogin>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Panel>
@@ -134,11 +152,32 @@ export function Login() {
                         </BudttonLogin>
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
                     </Panel>
+                    <GoogleSignin />
+                    <LoginSocialFacebook
+                        appId='873841367435786'
+                        fieldsProfile={
+                            'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
+                        }
+                        onResolve={async (response) => {
+                            console.log(response.data.accessToken);
+                            var result = await axios.post('/api/socialLogin', {
+                                Token: response.data.accessToken,
+                                Provider: "Facebook"
+                            })
+                            setAccsessToken(result.data)
+                            navigate("/")
+                        }}
+                        onReject={(error) => {
+                            console.log(error);
+                        } }>
+                        <FacebookLoginButton/>
+                    </LoginSocialFacebook>
                 </form>
+
             </MainDivLogin>
 
             <Link to="/">Home</Link>
-            <Outlet/>
+            <Outlet />
         </>
     )
 }
