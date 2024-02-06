@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Login } from './AppFiles/Login';
+import { Start } from './AppFiles/Start';
 import { Home } from './AppFiles/Home';
 import { Register } from './AppFiles/Register';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -22,8 +23,9 @@ export function App() {
 
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} >
+                <Route path="/" element={<Start />} >
                 </Route>
+                <Route path="home" element={<Home/> } />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="googlemaps" element={<GoogleMaps />} />

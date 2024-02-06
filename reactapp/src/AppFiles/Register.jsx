@@ -113,7 +113,7 @@ export function Register() {
                                     })} />
                             </Inputs>
                             <Inputs>
-                                <TextField error={errors.Password} id="Password" label="Password" variant="filled" helperText={errors.Password && errors.Password.message}
+                                <TextField error={errors.Password} type = "password" id="Password" label="Password" variant="filled" helperText={errors.Password && errors.Password.message}
                                     {...register("Password", {
                                         required: "Password is required",
                                         pattern: {
@@ -122,10 +122,11 @@ export function Register() {
                                         }
                                     })} />
                             </Inputs>
-                            <Inputs>
-                                <TextField error={errors.RePassword} id="RePassword" label="Re enter Password" variant="filled" helperText={errors.RePassword && errors.RePassword.message}
+                            <Inputs >
+                                <TextField error={errors.RePassword} type="password" id="RePassword" label="Re enter Password" variant="filled" helperText={errors.RePassword && errors.RePassword.message}
                                     {...register("RePassword", {
                                         required: "Password is required",
+                                        
                                         validate: isEven,
                                         pattern: {
                                             message: "The password does not match"

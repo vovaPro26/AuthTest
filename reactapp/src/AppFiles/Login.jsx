@@ -15,42 +15,37 @@ import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../AuthGoogle2';
 import { LoginSocialFacebook } from 'reactjs-social-login';
 import { FacebookLoginButton } from 'react-social-login-buttons'
+import TapAngGoNameImg from '../TapandgoName.png'
+import { PhonePageWrapper } from './Components/PhoneWrapper'
+import { styled as styleMui } from '@mui/material/styles';
+import { color } from '../../../node_modules/@mui/system/index';
+import { theme as newTheme } from './Components/NewTheme'
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 
 
 
 
-
-const MainDivLogin = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 5vh;
-`
 
 const LoginStyle = styled.div`
     font-size: 1.5em;
 
 `
-const Panel = styled.div`
-    width: 25em;
-    border: solid 1px;
-    border-radius: 5px;
-    display:flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content: center;
+
+const TextFieldOrange = styled(TextField)`
+
+    & .MuiFilledInput-underline:before {
+        border-bottom: 1px solid #FF3D00;
+    }
+
 `
 
-const InputsZone = styled.div`
-    width: 13em;
-    display:flex;
-    justify-content: center;
-`
 
 const Inputs = styled.div`
     margin-top: 5px;
     margin-bottom: 5px;
+    width: 100%
 `
 
 const BudttonLogin = styled.div`
@@ -107,43 +102,40 @@ export function Login() {
 
     return (
         <>
-
-            <MainDivLogin>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Panel>
+            <ThemeProvider theme={newTheme}>
+                <PhonePageWrapper>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <LoginStyle >
                             Login
                         </LoginStyle>
-                        <InputsZone>
-                            <div>
-                                <Inputs>
-                                    <TextField
-                                        id="Email"
-                                        label="Email"
-                                        variant="filled"
-                                        helperText={errors.email && errors.email.message}
-                                        error={errors.email}
-                                        {...register("email", {
-                                            required: "Email is required",
-                                            pattern: {
-                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                                message: "Email is invalid"
-                                            }
-                                        })} />
-                                </Inputs>
-                                <Inputs>
-                                    <TextField error={errors.Password} id="Password" label="Password" variant="filled" helperText={errors.Password && errors.Password.message}
-                                        {...register("Password", {
-                                            required: "Password is required",
-                                            pattern: {
-                                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
-                                                message: "Password is incorrect"
-                                            }
-                                        })} />
-                                </Inputs>
 
-                            </div>
-                        </InputsZone>
+                        <TextFieldOrange
+                            id="Email"
+                            label="Email"
+                            variant="filled"
+                            fullWidth
+                            helperText={errors.email && errors.email.message}
+                            error={errors.email}
+                            sx={{ input: { color: 'orange' } }}
+                            {...register("email", {
+                                required: "Email is required",
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: "Email is invalid"
+                                }
+                            })} />
+
+
+                        <TextFieldOrange error={errors.Password} fullWidth id="Password" label="Password" color="warning" variant="filled" helperText={errors.Password && errors.Password.message}
+                            {...register("Password", {
+                                required: "Password is required",
+                                pattern: {
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
+                                    message: "Password is incorrect"
+                                }
+                            })} />
+
+
                         <BudttonLogin>
                             <Button color="success" type="submit"
                                 variant="outlined" >
@@ -151,32 +143,10 @@ export function Login() {
                             </Button>
                         </BudttonLogin>
                         {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
-                    </Panel>
-                    <GoogleSignin />
-                    <LoginSocialFacebook
-                        appId='873841367435786'
-                        fieldsProfile={
-                            'id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender'
-                        }
-                        onResolve={async (response) => {
-                            console.log(response.data.accessToken);
-                            var result = await axios.post('/api/socialLogin', {
-                                Token: response.data.accessToken,
-                                Provider: "Facebook"
-                            })
-                            setAccsessToken(result.data)
-                            navigate("/")
-                        }}
-                        onReject={(error) => {
-                            console.log(error);
-                        } }>
-                        <FacebookLoginButton/>
-                    </LoginSocialFacebook>
-                </form>
+                    </form>
 
-            </MainDivLogin>
-
-            <Link to="/">Home</Link>
+                </PhonePageWrapper>
+            </ThemeProvider>
             <Outlet />
         </>
     )
