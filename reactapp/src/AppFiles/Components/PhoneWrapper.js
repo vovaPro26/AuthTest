@@ -10,7 +10,6 @@ flex-direction: column;
 
 export const PhonePage = styled.div`
 display: flex;
-height: 95vh;
 margin-left: 25px;
 margin-right: 25px; 
 align-items: center;

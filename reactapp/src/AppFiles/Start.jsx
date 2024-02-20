@@ -28,7 +28,10 @@ const ErrorContent = styled.div`
 color: red;
 `
 
-
+const ButtonDiv = styled.div`
+    margin-top: 3vh;
+    width: 100%;
+`
 
 const Line = styled.div`
    height: 0.4vh;
@@ -48,9 +51,12 @@ const FacebookLogin = styled.div`
 `
 
 const TapandGoName = styled.div`
-    margin-bottom: 35%;
 `
 
+const CentralContent = styled.div`
+    margin-top: 60%;
+    width: 100%;
+`
 
 export function Start() {
     const [accsessToken, setAccsessToken] = useRecoilState(AuthorizedStateTokenData);
@@ -68,7 +74,8 @@ export function Start() {
             steelBlue: createColor('#5C76B7'),
             violet: createColor('#BC00A3'),
             grey: createColor('#79747E')
-        }});
+        }
+    });
     //const theme = createTheme({
     //    palette: {
     //        ochre: {
@@ -154,25 +161,30 @@ export function Start() {
             <TapandGoName>
                 <img src={TapAngGoNameImg}></img>
             </TapandGoName>
-            <DefaultButton
-                onClick={LoginClickButton}
-                variant="outlined"
-                color="warning"
-                sx={{
+            <CentralContent>
+            <ButtonDiv>
+                <DefaultButton
+                    onClick={LoginClickButton}
+                    variant="outlined"
+                    color="warning"
+                    sx={{
 
-                    width: "100%",
-                    color: 'warning.main',
-                }}>Login</DefaultButton>
-            <DefaultButton
-                onClick={RegisterClickButton}
-                variant="outlined"
-                color="warning"
-                sx={{
-                    width: "100%",
-                    color: 'warning.main',
-                }}>
-                Register
-            </DefaultButton>
+                        width: "100%",
+                        color: 'warning.main',
+                    }}>Login</DefaultButton>
+            </ButtonDiv>
+            <ButtonDiv>
+                <DefaultButton
+                    onClick={RegisterClickButton}
+                    variant="outlined"
+                    color="warning"
+                    sx={{
+                        width: "100%",
+                        color: 'warning.main',
+                    }}>
+                    Register
+                </DefaultButton>
+            </ButtonDiv>
             <Line />
             <GoogleLogin>
                 <GoogleSignin />
@@ -200,6 +212,7 @@ export function Start() {
             </FacebookLogin>
 
 
+            </CentralContent>
             {isHomeError && <ErrorContent >{isHomeError}</ErrorContent>}
         </PhonePageWrapper>
     )

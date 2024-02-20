@@ -6,8 +6,8 @@ export const DefaultButton = styleMui(Button)`
     font-size : 3vh;
     border: 1px solid #79747E;
     font-weight: bold;
+    width:100%;
     text-transform: none;
     border-radius: 15px;
-    margin-top: 3.1vh;
 `
 

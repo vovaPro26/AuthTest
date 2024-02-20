@@ -2,41 +2,51 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@material-ui/core';
+import { Button, TextField, AppBar, Toolbar, Typography, Box } from '@mui/material';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { PhonePageWrapper } from './Components/PhoneWrapper'
+import { DefaultButton } from './Components/MuiComponents'
+import TapAngGoNameImg from '../TapandgoName.png'
+import { useNavigate } from "react-router-dom";
+import { theme as newTheme } from './Components/NewTheme'
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
-const MainDivRegister = styled.div`
+
+const TextFieldOrange = styled(TextField)`
+
+    & .MuiFilledInput-underline:before {
+        border-color:#FF7A4F;
+    }
+     & .MuiFilledInput-underline:after {
+        border-color:#FF7A4F;
+    }
+     & .MuiFilledInput-underline:hover {
+            border-color:#FF7A4F;
+    }  
+ 
+`
+const RegisterStyle = styled.div`
+       font-size: 1.8em;
+    margin-bottom: 2vh;
+    font-family: serif;
+
+`
+
+const RegisterDiv = styled.div`
+    margin-top: 55%
+`
+
+const HaveAnAcountDiv = styled.div`
+
+    margin-top: 2%;
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 5vh;
+    align-items: center;
 `
 
-const RegisterStyle = styled.div`
-    font-size: 1.5em;
-
-`
-const Panel = styled.div`
-    width: 25em;
-    border: solid 1px;
-    border-radius: 5px;
-    display:flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content: center;
-`
-
-const InputsZone = styled.div`
-    width: 13em;
-    display:flex;
-    justify-content: center;
-`
-
-const Inputs = styled.div`
-    margin-top: 5px;
-    margin-bottom: 5px;
-`
 
 const BudttonReg = styled.div`
 
@@ -45,6 +55,18 @@ const BudttonReg = styled.div`
 
 const ErrorContent = styled.div`
 color: red;
+`
+const TextFieldDiv = styled.div`
+    width: 100%;
+    margin-bottom: 2vh;
+    
+`
+
+const TapandgoDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
 `
 
 
@@ -64,6 +86,11 @@ export function Register() {
         formState: { errors },
         handleSubmit
     } = useForm();
+    let navigate = useNavigate()
+
+    function GoToTheLogin() {
+        navigate('/login');
+    }
 
     async function onSubmit(e) {
         try {
@@ -88,62 +115,79 @@ export function Register() {
 
     };
     return (
-        <MainDivRegister>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Panel>
-                    <RegisterStyle >
-                        Register
-                    </RegisterStyle>
-                    <InputsZone>
-                        <div>
-                            <Inputs>
-                                <TextField
-                                    id="Email"
-                                    label="Email"
-                                    variant="filled"
-                                    helperText={errors.email && errors.email.message}
-                                    error={errors.email}
-                                    {...register("email", {
-                                        required: "Email is required",
-                                        
-                                        pattern: {
-                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                            message: "Email is invalid"
-                                        }
-                                    })} />
-                            </Inputs>
-                            <Inputs>
-                                <TextField error={errors.Password} type = "password" id="Password" label="Password" variant="filled" helperText={errors.Password && errors.Password.message}
-                                    {...register("Password", {
-                                        required: "Password is required",
-                                        pattern: {
-                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
-                                            message: "Password is incorrect"
-                                        }
-                                    })} />
-                            </Inputs>
-                            <Inputs >
-                                <TextField error={errors.RePassword} type="password" id="RePassword" label="Re enter Password" variant="filled" helperText={errors.RePassword && errors.RePassword.message}
-                                    {...register("RePassword", {
-                                        required: "Password is required",
-                                        
-                                        validate: isEven,
-                                        pattern: {
-                                            message: "The password does not match"
-                                        }
-                                    })} />
-                            </Inputs>
-                        </div>
-                    </InputsZone>
-                    <BudttonReg>
-                        <Button color="success" type="submit"
-                            variant="outlined" >
+        <ThemeProvider theme={newTheme}>
+            <PhonePageWrapper>
+
+                <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+                    <TapandgoDiv>
+                        <img src={TapAngGoNameImg}></img>
+                    </TapandgoDiv>
+                    <RegisterDiv>
+                        <RegisterStyle >
                             Register
-                        </Button>
-                    </BudttonReg>
-                    {isRegisterError && <ErrorContent >{isRegisterError}</ErrorContent>}     
-                </Panel>
-            </form>
-        </MainDivRegister>
+                        </RegisterStyle>
+
+                        <TextFieldDiv fullWidth>
+                            <TextFieldOrange
+                                id="Email"
+                                label="Email"
+                                variant="filled"
+                                fullWidth
+                                helperText={errors.email && errors.email.message}
+                                error={errors.email}
+                                sx={{ input: { color: 'orange' } }}
+                                {...register("email", {
+                                    required: "Email is required",
+
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Email is invalid"
+                                    }
+                                })} />
+                        </TextFieldDiv>
+
+
+                        <TextFieldDiv fullWidth>
+                            <TextFieldOrange error={errors.Password} fullWidth type="password" id="Password" label="Password" variant="filled" helperText={errors.Password && errors.Password.message}
+                                {...register("Password", {
+                                    required: "Password is required",
+                                    pattern: {
+                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
+                                        message: "Password is incorrect"
+                                    }
+                                })} />
+                        </TextFieldDiv>
+
+
+                        <TextFieldDiv fullWidth>
+                            <TextFieldOrange error={errors.RePassword} fullWidth type="password" id="RePassword" label="Re enter Password" variant="filled" helperText={errors.RePassword && errors.RePassword.message}
+                                {...register("RePassword", {
+                                    required: "Password is required",
+
+                                    validate: isEven,
+                                    pattern: {
+                                        message: "The password does not match"
+                                    }
+                                })} />
+                        </TextFieldDiv>
+
+
+
+                        <BudttonReg>
+                            <DefaultButton color="warning" type="submit"
+                                variant="outlined" >
+                                Register
+                            </DefaultButton>
+                        </BudttonReg>
+                        <HaveAnAcountDiv>
+                            Have an Acount
+                            <Button color="warning" onClick={GoToTheLogin}>Login</Button>
+                        </HaveAnAcountDiv>
+                        {isRegisterError && <ErrorContent >{isRegisterError}</ErrorContent>}
+                    </RegisterDiv>
+                </form>
+
+            </PhonePageWrapper>
+        </ThemeProvider>
     )
 }

@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Outlet, Link } from "react-router-dom";
@@ -21,6 +21,7 @@ import { styled as styleMui } from '@mui/material/styles';
 import { color } from '../../../node_modules/@mui/system/index';
 import { theme as newTheme } from './Components/NewTheme'
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { DefaultButton } from './Components/MuiComponents'
 
 
 
@@ -29,28 +30,55 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 const LoginStyle = styled.div`
-    font-size: 1.5em;
-
+    font-size: 1.8em;
+    margin-bottom: 2vh;
+    font-family: serif;
 `
 
 const TextFieldOrange = styled(TextField)`
 
     & .MuiFilledInput-underline:before {
-        border-bottom: 1px solid #FF3D00;
+        border-color:#FF7A4F;
     }
+     & .MuiFilledInput-underline:after {
+        border-color:#FF7A4F;
+    }
+     & .MuiFilledInput-underline:hover {
+            border-color:#FF7A4F;
+ }
+ 
+`
 
+const TextFieldDiv = styled.div`
+    width: 100%;
+    margin-bottom: 2vh;
+    
+`
+
+const LoginDiv = styled.div`
+    margin-top: 55%
+`
+
+const DontHaveAnAcountDiv = styled.div`
+    margin-top: 2%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const TapandgoDiv = styled.div`
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
 `
 
 
-const Inputs = styled.div`
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 100%
-`
 
-const BudttonLogin = styled.div`
+const ButtonLogin = styled.div`
 
-  margin-bottom:3px;
+  
 `
 
 const ErrorContent = styled.div`
@@ -76,6 +104,10 @@ export function Login() {
         formState: { errors },
         handleSubmit
     } = useForm();
+
+    function GoToTheRegister() {
+        navigate('/register');
+    }
 
     async function onSubmit(e) {
         try {
@@ -104,45 +136,62 @@ export function Login() {
         <>
             <ThemeProvider theme={newTheme}>
                 <PhonePageWrapper>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <LoginStyle >
-                            Login
-                        </LoginStyle>
-
-                        <TextFieldOrange
-                            id="Email"
-                            label="Email"
-                            variant="filled"
-                            fullWidth
-                            helperText={errors.email && errors.email.message}
-                            error={errors.email}
-                            sx={{ input: { color: 'orange' } }}
-                            {...register("email", {
-                                required: "Email is required",
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: "Email is invalid"
-                                }
-                            })} />
-
-
-                        <TextFieldOrange error={errors.Password} fullWidth id="Password" label="Password" color="warning" variant="filled" helperText={errors.Password && errors.Password.message}
-                            {...register("Password", {
-                                required: "Password is required",
-                                pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
-                                    message: "Password is incorrect"
-                                }
-                            })} />
-
-
-                        <BudttonLogin>
-                            <Button color="success" type="submit"
-                                variant="outlined" >
+                    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+                        <TapandgoDiv>
+                            <img src={TapAngGoNameImg}></img>
+                        </TapandgoDiv>
+                        <LoginDiv>
+                            <LoginStyle >
                                 Login
-                            </Button>
-                        </BudttonLogin>
-                        {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
+                            </LoginStyle>
+                            <TextFieldDiv fullWidth>
+                                <TextFieldOrange
+                                    id="Email"
+                                    label="Email"
+                                    variant="filled"
+                                    fullWidth
+                                    helperText={errors.email && errors.email.message}
+                                    error={errors.email}
+                                    sx={{ input: { color: 'orange' } }}
+                                    {...register("email", {
+                                        required: "Email is required",
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                            message: "Email is invalid"
+                                        }
+                                    })} />
+                            </TextFieldDiv>
+
+
+                            <TextFieldDiv fullWidth>
+                                <TextFieldOrange error={errors.Password} fullWidth id="Password" label="Password" color="warning" variant="filled" helperText={errors.Password && errors.Password.message}
+                                    {...register("Password", {
+                                        required: "Password is required",
+                                        pattern: {
+                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,14}$/i,
+                                            message: "Password is incorrect"
+                                        }
+                                    })} />
+                            </TextFieldDiv>
+
+
+
+
+                            <ButtonLogin>
+                                <DefaultButton color="warning" type="submit"
+                                    variant="outlined" sx={{
+                                        width: "100%",
+                                        color: 'warning.main',
+                                    }}>
+                                    Login
+                                </DefaultButton>
+                            </ButtonLogin>
+                            {isLoginError && <ErrorContent >The Login is incorrect</ErrorContent>}
+                            <DontHaveAnAcountDiv>
+                                Don’t have an account?
+                                <Button color="warning" onClick={GoToTheRegister}>Register</Button>
+                            </DontHaveAnAcountDiv>
+                        </LoginDiv>
                     </form>
 
                 </PhonePageWrapper>
