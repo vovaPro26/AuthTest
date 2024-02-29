@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const CentralDiv = styled.div`
 display: flex;
 
-justify-content: center;
 flex-direction: column;
+width: 100%;
 `
 
 
@@ -13,9 +13,9 @@ display: flex;
 margin-left: 25px;
 margin-right: 25px; 
 align-items: center;
-justify-content: center;
+
 flex-direction: column;
-margin-top: 1vh;    
+  
 `
 
 

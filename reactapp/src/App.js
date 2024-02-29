@@ -11,6 +11,9 @@ import { Register } from './AppFiles/Register';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleMaps  from './AppFiles/GoogleMaps';
 import { OpenStreetMap } from './AppFiles/OpenStreetMaps';
+import { PassangerRouteSearch } from './AppFiles/PassangerRouteSearch';
+import { DriverRouteAdd } from './AppFiles/DriverRouteAdd';
+import Example from './AppFiles/ExampleBottomSheet'
 import "./styles.css";
 
 
@@ -30,6 +33,9 @@ export function App() {
                 <Route path="register" element={<Register />} />
                 <Route path="googlemaps" element={<GoogleMaps />} />
                 <Route path="openstreetmaps" element={<OpenStreetMap />} />
+                <Route path="passangerroutesearch" element={<PassangerRouteSearch/> } />
+                <Route path="driverroutesearch" element={<DriverRouteAdd />} />
+                <Route path="example" element={<Example />} />
             </Routes>
         </BrowserRouter>
 

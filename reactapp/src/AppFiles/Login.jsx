@@ -18,7 +18,6 @@ import { FacebookLoginButton } from 'react-social-login-buttons'
 import TapAngGoNameImg from '../TapandgoName.png'
 import { PhonePageWrapper } from './Components/PhoneWrapper'
 import { styled as styleMui } from '@mui/material/styles';
-import { color } from '../../../node_modules/@mui/system/index';
 import { theme as newTheme } from './Components/NewTheme'
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { DefaultButton } from './Components/MuiComponents'

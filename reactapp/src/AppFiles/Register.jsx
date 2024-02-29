@@ -180,7 +180,7 @@ export function Register() {
                             </DefaultButton>
                         </BudttonReg>
                         <HaveAnAcountDiv>
-                            Have an Acount
+                            Have an account
                             <Button color="warning" onClick={GoToTheLogin}>Login</Button>
                         </HaveAnAcountDiv>
                         {isRegisterError && <ErrorContent >{isRegisterError}</ErrorContent>}
