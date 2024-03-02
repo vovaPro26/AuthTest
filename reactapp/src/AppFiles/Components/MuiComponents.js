@@ -9,5 +9,6 @@ export const DefaultButton = styleMui(Button)`
     width:100%;
     text-transform: none;
     border-radius: 15px;
+    background-color: white;
 `
 

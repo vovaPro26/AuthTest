@@ -13,7 +13,7 @@ import GoogleMaps  from './AppFiles/GoogleMaps';
 import { OpenStreetMap } from './AppFiles/OpenStreetMaps';
 import { PassangerRouteSearch } from './AppFiles/PassangerRouteSearch';
 import { DriverRouteAdd } from './AppFiles/DriverRouteAdd';
-import Example from './AppFiles/ExampleBottomSheet'
+import { Example } from './AppFiles/ExampleBottomSheet'
 import "./styles.css";
 
 

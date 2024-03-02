@@ -1,20 +1,20 @@
-//import Sheet from 'react-modal-sheet';
-//import { useState } from 'react';
+﻿import Sheet from 'react-modal-sheet';
+import { useState } from 'react';
 
-//export default function Example() {
-//    const [isOpen, setOpen] = useState(false);
+export function Example() {
+    const [isOpen, setOpen] = useState(false);
 
-//    return (
-//        <>
-//            <button onClick={() => setOpen(true)}>Open sheet</button>
+    return (
+        <>
+            <button onClick={() => setOpen(true)}>Open sheet</button>
 
-//            <Sheet isOpen={isOpen} onClose={() => setOpen(false)}>
-//                <Sheet.Container>
-//                    <Sheet.Header />
-//                    <Sheet.Content>{/* Your sheet content goes here */}</Sheet.Content>
-//                </Sheet.Container>
-//                <Sheet.Backdrop />
-//            </Sheet>
-//        </>
-//    );
-//}
+            <Sheet isOpen={isOpen} isOpen={() => setOpen(true)} snapPoints={[600, 270]} onCloseEnd={() => setOpen(true)} onClose={() => setOpen(true)}>
+                <Sheet.Container>
+                    <Sheet.Header />
+                    <Sheet.Content>Helolo</Sheet.Content>
+                </Sheet.Container>
+                <Sheet.Backdrop />
+            </Sheet>
+        </>
+    );
+}
