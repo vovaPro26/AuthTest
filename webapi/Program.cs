@@ -73,6 +73,7 @@ app.AddSocialLogin();
 app.AddRegister();
 app.GetData();
 app.AddRoute();
+app.GetStreetAutocomplete();
 
 	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
 //app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");

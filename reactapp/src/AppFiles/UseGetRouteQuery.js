@@ -7,6 +7,31 @@ import {
 import axios from 'axios';
 import getRoute from "./getRoute";
 
+const config = { 
+    mode: 'no-cors',
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Credentials': 'true'
+    },
+    secured: false
+
+}
+
+export function useStreetAutocompleteQuery(address) {
+    const isEnabled = address && address.length > 1;
+    return useQuery({
+        enabled: isEnabled,
+        queryKey: ['streetAutocompleteQuery', address],
+        queryFn: async () => {
+            await axios.get(`/api/streetautocompletedata?address=${address}`, config)
+                .then(res => {
+                    console.log(res)
+                })
+        }
+
+    })
+}
 export function GetRouteQuery(cordinateArr) {
     console.log(cordinateArr.length)
     const isEnabled = cordinateArr != null && cordinateArr.length >= 2
