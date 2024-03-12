@@ -24,10 +24,7 @@ export function useStreetAutocompleteQuery(address) {
         enabled: isEnabled,
         queryKey: ['streetAutocompleteQuery', address],
         queryFn: async () => {
-            await axios.get(`/api/streetautocompletedata?address=${address}`, config)
-                .then(res => {
-                    console.log(res)
-                })
+            return await axios.get(`/api/streetautocompletedata?address=${address}`, config);                
         }
 
     })
@@ -39,8 +36,7 @@ export function GetRouteQuery(cordinateArr) {
         enabled: isEnabled,
         queryKey: ['repoData', ...cordinateArr],
         queryFn: async () => {
-            var resGetRoute = await getRoute(cordinateArr[0].replace(/\s+/g, ''), cordinateArr[1].replace(/\s+/g, ''))
-            return resGetRoute
+            return await getRoute(cordinateArr[0].replace(/\s+/g, ''), cordinateArr[1].replace(/\s+/g, ''));
         }
     })
 }

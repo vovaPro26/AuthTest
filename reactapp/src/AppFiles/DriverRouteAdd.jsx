@@ -39,6 +39,11 @@ const NextButton = styled.div`
 export function DriverRouteAdd() {
     const [address, setAddress] = useState("aa");
     const { isLoading, error, data } = useStreetAutocompleteQuery(address)
+    const autocompleteValues = !isLoading && data !== null && data !== undefined ?
+        data.data.predictions.map((p) => p.description) :
+        [];
+
+
     return (
         <>
             <RecentTripsDiv>
@@ -46,9 +51,9 @@ export function DriverRouteAdd() {
                     <Autocomplete
                         disablePortal
                         id="combo-box-demo"
-                        options={top100Films}
+                        options={autocompleteValues}
                         sx={{ width: 300 }}
-                        renderInput={(params) => <TextField  color="warning" {...params} label="Movie" />}
+                        renderInput={(params) => <TextField onChange={(e) => setAddress(e.target.value)} color="warning" {...params} label="Place" />}
                     />
                 </PhonePageWrapper>
             </RecentTripsDiv>
