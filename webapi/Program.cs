@@ -74,9 +74,10 @@ app.AddRegister();
 app.GetData();
 app.AddRoute();
 app.GetStreetAutocomplete();
+app.GetStreetDetails();
 
-	//.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
-//app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
+    //.RequireAuthorization(new AuthorizeAttribute{ Roles = "User" });
+    //app.MapGet("/api/data", [AllowAnonymous] (HttpContext context) => $"Hello Anonim!");
 app.MapGet("/api/securedata", [Authorize(Roles = "Admin")] (HttpContext context) => $"Hello Admin!");
 
 app.UseHttpsRedirection();

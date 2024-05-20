@@ -19,7 +19,7 @@ const config = {
 }
 
 export function useStreetAutocompleteQuery(address) {
-    const isEnabled = address && address.length > 1;
+    const isEnabled = !!address && address.length > 1;
     return useQuery({
         enabled: isEnabled,
         queryKey: ['streetAutocompleteQuery', address],
@@ -29,6 +29,18 @@ export function useStreetAutocompleteQuery(address) {
 
     })
 }
+
+export function useStreetDetailsQuery(placeId) {
+    const isEnabled = !!placeId && placeId.length > 1;
+    return useQuery({
+        enabled: isEnabled,
+        queryKey: ['streetDetailsQuery', placeId],
+        queryFn: async () => {
+            return await axios.get(`/api/streetdetailsdata?placeId=${placeId}`, config);
+        }
+    })
+}
+
 export function GetRouteQuery(cordinateArr) {
     console.log(cordinateArr.length)
     const isEnabled = cordinateArr != null && cordinateArr.length >= 2

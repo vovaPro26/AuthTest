@@ -5,7 +5,7 @@ import { DefaultButton } from './Components/MuiComponents'
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useStreetAutocompleteQuery } from "./UseGetRouteQuery";
+import { useStreetAutocompleteQuery, useStreetDetailsQuery } from "./UseGetRouteQuery";
 import { useState } from "react";
 
 const DownMenu = styled.div`
@@ -38,7 +38,9 @@ const NextButton = styled.div`
 
 export function DriverRouteAdd() {
     const [address, setAddress] = useState("aa");
+    const [placeId, setPlaceId] = useState("ChIJb36yJ6QN0kARIZJ55ya1q60");
     const { isLoading, error, data } = useStreetAutocompleteQuery(address)
+    const { isLoading: isLoadingDetails, error: errorDetais, data: dataDetails } = useStreetDetailsQuery(placeId)
     const autocompleteValues = !isLoading && data !== null && data !== undefined ?
         data.data.predictions.map((p) => p.description) :
         [];
