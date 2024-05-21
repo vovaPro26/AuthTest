@@ -42,7 +42,8 @@ export function DriverRouteAdd() {
     const { isLoading, error, data } = useStreetAutocompleteQuery(address)
     const { isLoading: isLoadingDetails, error: errorDetais, data: dataDetails } = useStreetDetailsQuery(placeId)
     const autocompleteValues = !isLoading && data !== null && data !== undefined ?
-        data.data.predictions.map((p) => p.description) :
+        //data.data.predictions.map(p => p.description) :
+        data.data.predictions.map(p => ({ label: p.description, id: p.place_id })) :
         [];
 
 
@@ -54,8 +55,20 @@ export function DriverRouteAdd() {
                         disablePortal
                         id="combo-box-demo"
                         options={autocompleteValues}
+                        getOptionLabel={(option) => option.label}
                         sx={{ width: 300 }}
-                        renderInput={(params) => <TextField onChange={(e) => setAddress(e.target.value)} color="warning" {...params} label="Place" />}
+                        onChange={(e) => {
+                            console.log(e.target.innerText)
+                            const res = data.data.predictions.find((p) => e.target.innerText === p.description)
+                            setPlaceId(res.place_id)
+                            console.log(res)
+                        }}
+                        renderInput={(params) => {
+                                console.log("Params: ");
+                                console.log(params);
+                            return (<TextField onChange={(e) => { console.log(e.target); setAddress(e.target.value); } } color="warning" {...params} label="Place" />);
+                            }
+                        }
                     />
                 </PhonePageWrapper>
             </RecentTripsDiv>

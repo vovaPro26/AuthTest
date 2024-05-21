@@ -28,9 +28,26 @@ namespace webapi
         public static WebApplication GetStreetDetails(this WebApplication app) {
             app.MapGet("/api/streetdetailsdata", async (string placeId, System.Net.Http.IHttpClientFactory httpClientFactory) =>
             {
+
+                var json1 = "{\r\n   \"html_attributions\" : [],\r\n   \"result\" : \r\n   {\r\n      \"formatted_phone_number\" : \"0800 330 909\",\r\n      \"geometry\" : \r\n      {\r\n         \"location\" : \r\n         {\r\n            \"lat\" : 50.4636297,\r\n            \"lng\" : 30.3701602\r\n         },\r\n         \"viewport\" : \r\n         {\r\n            \"northeast\" : \r\n            {\r\n               \"lat\" : 50.4650428802915,\r\n               \"lng\" : 30.3715838302915\r\n            },\r\n            \"southwest\" : \r\n            {\r\n               \"lat\" : 50.4623449197085,\r\n               \"lng\" : 30.3688858697085\r\n            }\r\n         }\r\n      },\r\n      \"name\" : \"Уманьпиво\"\r\n   },\r\n   \"status\" : \"OK\"\r\n}";
+                var json2 = "{\r\n   \"html_attributions\" : [],\r\n   \"result\" : \r\n   {\r\n      \"geometry\" : \r\n      {\r\n         \"location\" : \r\n         {\r\n            \"lat\" : 48.74939269999999,\r\n            \"lng\" : 30.2214499\r\n         },\r\n         \"viewport\" : \r\n         {\r\n            \"northeast\" : \r\n            {\r\n               \"lat\" : 48.80908195216012,\r\n               \"lng\" : 30.27136185949318\r\n            },\r\n            \"southwest\" : \r\n            {\r\n               \"lat\" : 48.71692899337566,\r\n               \"lng\" : 30.16015589061474\r\n            }\r\n         }\r\n      },\r\n      \"name\" : \"Uman'\"\r\n   },\r\n   \"status\" : \"OK\"\r\n}";
+                var json3 = "{\r\n   \"html_attributions\" : [],\r\n   \"result\" : \r\n   {\r\n      \"formatted_phone_number\" : \"097 206 3484\",\r\n      \"geometry\" : \r\n      {\r\n         \"location\" : \r\n         {\r\n            \"lat\" : 48.7498286,\r\n            \"lng\" : 30.2213099\r\n         },\r\n         \"viewport\" : \r\n         {\r\n            \"northeast\" : \r\n            {\r\n               \"lat\" : 48.7510674302915,\r\n               \"lng\" : 30.22256623029151\r\n            },\r\n            \"southwest\" : \r\n            {\r\n               \"lat\" : 48.7483694697085,\r\n               \"lng\" : 30.21986826970851\r\n            }\r\n         }\r\n      },\r\n      \"name\" : \"Uman'\"\r\n   },\r\n   \"status\" : \"OK\"\r\n}";
+                var json4 = "{\r\n   \"html_attributions\" : [],\r\n   \"result\" : \r\n   {\r\n      \"formatted_phone_number\" : \"098 604 8464\",\r\n      \"geometry\" : \r\n      {\r\n         \"location\" : \r\n         {\r\n            \"lat\" : 48.752661,\r\n            \"lng\" : 30.21722979999999\r\n         },\r\n         \"viewport\" : \r\n         {\r\n            \"northeast\" : \r\n            {\r\n               \"lat\" : 48.7539298802915,\r\n               \"lng\" : 30.2185301302915\r\n            },\r\n            \"southwest\" : \r\n            {\r\n               \"lat\" : 48.7512319197085,\r\n               \"lng\" : 30.2158321697085\r\n            }\r\n         }\r\n      },\r\n      \"name\" : \"Uman Plaza\"\r\n   },\r\n   \"status\" : \"OK\"\r\n}";
+                var json5 = "{\r\n   \"html_attributions\" : [],\r\n   \"result\" : \r\n   {\r\n      \"formatted_phone_number\" : \"096 029 2929\",\r\n      \"geometry\" : \r\n      {\r\n         \"location\" : \r\n         {\r\n            \"lat\" : 48.74630740000001,\r\n            \"lng\" : 30.21038399999999\r\n         },\r\n         \"viewport\" : \r\n         {\r\n            \"northeast\" : \r\n            {\r\n               \"lat\" : 48.74778008029151,\r\n               \"lng\" : 30.2117862302915\r\n            },\r\n            \"southwest\" : \r\n            {\r\n               \"lat\" : 48.74508211970851,\r\n               \"lng\" : 30.2090882697085\r\n            }\r\n         }\r\n      },\r\n      \"name\" : \"Уманьпиво - Пивоварня\"\r\n   },\r\n   \"status\" : \"OK\"\r\n}";
+                var dict = new Dictionary<string, string>
+                {
+                    { "ChIJb36yJ6QN0kARIZJ55ya1q60", json3 },
+                    {"ChIJ17G7ibsN0kARUZkv1IAsMUg", json2 },
+                    {"ChIJZcPeQ2YM0kARFlWkZ8zygto", json4},
+                    {"ChIJb6vfBqkN0kARu_TtrNq8CGU", json5 },
+                    {"ChIJE0xsF2HN1EARHBZM8clSjb0", json1 }
+                };
+
+                var res = dict.TryGetValue(placeId, out var val) ? val : json1;
+                return Results.Content(res);
                 //HttpClient _httpClient;
                 //_httpClient = httpClientFactory.CreateClient();
-                //var res = await _httpClient.GetAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=geometry%2Cname%2Cformatted_phone_number&place_id=ChIJb36yJ6QN0kARIZJ55ya1q60&key=AIzaSyD1PUyWjB8mr4jJVAhkADa5IrwKv4v0D58");
+                //var res = await _httpClient.GetAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Cgeometry%2Cformatted_phone_number&place_id={placeId}&key=AIzaSyD1PUyWjB8mr4jJVAhkADa5IrwKv4v0D58");
                 //res.EnsureSuccessStatusCode();
                 //var json = await res.Content.ReadAsStringAsync();
                 //return Results.Content(json);
