@@ -1,4 +1,5 @@
 ﻿import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import { useMap } from 'react-leaflet/hooks'
 import { PhonePageWrapper } from './Components/PhoneWrapper'
 import styled from 'styled-components';
 import { DefaultButton } from './Components/MuiComponents'
@@ -6,7 +7,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useStreetAutocompleteQuery, useStreetDetailsQuery } from "./UseGetRouteQuery";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DownMenu = styled.div`
     height: 100%;
@@ -37,6 +38,8 @@ const NextButton = styled.div`
 
 
 export function DriverRouteAdd() {
+    const [coordinates, setCoordinates] = useState({ lat: 10, lng: 10 });
+    const [zoom, setZoom] = useState();
     const [address, setAddress] = useState("aa");
     const [placeId, setPlaceId] = useState("ChIJb36yJ6QN0kARIZJ55ya1q60");
     const { isLoading, error, data } = useStreetAutocompleteQuery(address)
@@ -45,6 +48,30 @@ export function DriverRouteAdd() {
         //data.data.predictions.map(p => p.description) :
         data.data.predictions.map(p => ({ label: p.description, id: p.place_id })) :
         [];
+
+
+    const RecenterAutomatically = ({ lat, lng }) => {
+        const map = useMap();
+        useEffect(() => {
+            map.setView([lat, lng],18);
+        }, [lat, lng]);
+        return null;
+    }    
+
+    const coord = !isLoadingDetails ? dataDetails.data.result.geometry.location : { lat: 10, lng: 10 };
+    console.log(coord);
+
+
+    //function OnChangeCoor() {
+
+    //    setCoordinates(coord)
+    //}
+
+    //if (!isLoadingDetails) {
+    //    if (coordinates !== dataDetails.data.result.geometry.viewport.northeast) {
+    //        OnChangeCoor()
+    //    }
+    //}
 
 
     return (
@@ -58,16 +85,12 @@ export function DriverRouteAdd() {
                         getOptionLabel={(option) => option.label}
                         sx={{ width: 300 }}
                         onChange={(e) => {
-                            console.log(e.target.innerText)
                             const res = data.data.predictions.find((p) => e.target.innerText === p.description)
                             setPlaceId(res.place_id)
-                            console.log(res)
                         }}
                         renderInput={(params) => {
-                                console.log("Params: ");
-                                console.log(params);
-                            return (<TextField onChange={(e) => { console.log(e.target); setAddress(e.target.value); } } color="warning" {...params} label="Place" />);
-                            }
+                            return (<TextField onChange={(e) => { console.log(e.target); setAddress(e.target.value); }} color="warning" {...params} label="Place" />);
+                        }
                         }
                     />
                 </PhonePageWrapper>
@@ -79,7 +102,7 @@ export function DriverRouteAdd() {
                     </DefaultButton>
                 </PhonePageWrapper>
             </NextButton>
-            <MapContainer center={[50.4547, 30.5238]} zoom={10}>
+            <MapContainer center={[coord.lat, coord.lng]} zoom={10}>
 
 
                 <TileLayer
@@ -87,6 +110,7 @@ export function DriverRouteAdd() {
                     url="https://api.maptiler.com/maps/outdoor-v2/{z}/{x}/{y}.png?key=7h6rpJcY0Ib55GV7vQkR"
 
                 />
+                <RecenterAutomatically lat={coord.lat} lng={coord.lng} />
             </MapContainer>
 
         </>
