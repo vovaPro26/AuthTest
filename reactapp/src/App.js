@@ -13,6 +13,7 @@ import GoogleMaps  from './AppFiles/GoogleMaps';
 import { OpenStreetMap } from './AppFiles/OpenStreetMaps';
 import { PassangerRouteSearch } from './AppFiles/PassangerRouteSearch';
 import { DriverRouteAdd } from './AppFiles/DriverRouteAdd';
+import { ChooseDriverSettings } from './AppFiles/ChooseDriverSettings';
 import { Example } from './AppFiles/ExampleBottomSheet'
 import "./styles.css";
 
@@ -35,6 +36,7 @@ export function App() {
                 <Route path="openstreetmaps" element={<OpenStreetMap />} />
                 <Route path="passangerroutesearch" element={<PassangerRouteSearch/> } />
                 <Route path="driverroutesearch" element={<DriverRouteAdd />} />
+                <Route path="choosedriversettings" element={<ChooseDriverSettings/>}/>
                 <Route path="example" element={<Example />} />
             </Routes>
         </BrowserRouter>
